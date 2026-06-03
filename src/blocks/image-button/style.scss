@@ -6,7 +6,46 @@
  */
 
 .wp-block-chris-radtke-portfolio-blocks-image-button {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	position: relative;
+	display: block;
+	width: 100%;
+	text-decoration: none;
+	overflow: hidden;
+
+	// Smooth cursor for linked variant
+	&[href] {
+		cursor: pointer;
+
+		// Subtle brightness shift on hover to signal interactivity
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: rgba(0, 0, 0, 0);
+			transition: background 0.2s ease;
+			pointer-events: none;
+		}
+
+		&:hover::after {
+			background: rgba(0, 0, 0, 0.12);
+		}
+
+		&:active::after {
+			background: rgba(0, 0, 0, 0.22);
+		}
+	}
+
+	// Focus style for keyboard navigation
+	&:focus-visible {
+		outline: 3px solid currentColor;
+		outline-offset: 3px;
+	}
+
+	// Fixed attachment doesn't work on mobile — fall back to scroll
+	@media (max-width: 782px) {
+		&[style*="background-attachment:fixed"],
+		&[style*="background-attachment: fixed"] {
+			background-attachment: scroll !important;
+		}
+	}
 }

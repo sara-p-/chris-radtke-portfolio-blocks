@@ -1,14 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __ } from "@wordpress/i18n";
 import {
 	useBlockProps,
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
 	URLInput,
-} from '@wordpress/block-editor';
+} from "@wordpress/block-editor";
 import {
 	PanelBody,
 	PanelRow,
@@ -18,14 +18,15 @@ import {
 	TextControl,
 	FocalPointPicker,
 	__experimentalUnitControl as UnitControl,
-} from '@wordpress/components';
-import { useState } from '@wordpress/element';
+} from "@wordpress/components";
+import { useState } from "@wordpress/element";
 
-import './editor.scss';
+import "./editor.scss";
 
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit({ attributes, setAttributes }) {
 	const {
 		minHeight,
+		minHeightMobile,
 		backgroundImage,
 		backgroundSize,
 		backgroundPosition,
@@ -36,202 +37,221 @@ export default function Edit( { attributes, setAttributes } ) {
 		linkTarget,
 	} = attributes;
 
-	const blockProps = useBlockProps( {
+	const blockProps = useBlockProps({
 		style: {
-			minHeight: minHeight || '300px',
+			minHeight: `clamp(${minHeightMobile || "200px"}, 50vw, ${minHeight || "300px"})`,
 			backgroundImage: backgroundImage?.url
-				? `url(${ backgroundImage.url })`
+				? `url(${backgroundImage.url})`
 				: undefined,
-			backgroundSize: backgroundSize || 'cover',
+			backgroundSize: backgroundSize || "cover",
 			backgroundPosition: focalPoint
-				? `${ focalPoint.x * 100 }% ${ focalPoint.y * 100 }%`
-				: backgroundPosition || 'center center',
-			backgroundRepeat: backgroundRepeat || 'no-repeat',
-			backgroundAttachment: backgroundAttachment || 'scroll',
-			display: 'block',
-			cursor: 'pointer',
-			position: 'relative',
+				? `${focalPoint.x * 100}% ${focalPoint.y * 100}%`
+				: backgroundPosition || "center center",
+			backgroundRepeat: backgroundRepeat || "no-repeat",
+			backgroundAttachment: backgroundAttachment || "scroll",
+			display: "block",
+			cursor: "pointer",
+			position: "relative",
 		},
-	} );
+	});
 
 	return (
 		<>
 			<InspectorControls>
-				{ /* --- Dimensions Panel --- */ }
+				{/* --- Dimensions Panel --- */}
 				<PanelBody
-					title={ __( 'Dimensions', 'chris-radtke-portfolio-blocks' ) }
-					initialOpen={ true }
+					title={__("Dimensions", "chris-radtke-portfolio-blocks")}
+					initialOpen={true}
 				>
 					<PanelRow>
-						
 						<UnitControl
-							label={ __( 'Min Height', 'chris-radtke-portfolio-blocks' ) }
-							value={ minHeight || '300px' }
-							onChange={ ( value ) => setAttributes( { minHeight: value } ) }
-							units={ [
-								{ value: 'px', label: 'px', default: 300 },
-								{ value: 'vh', label: 'vh', default: 50 },
-								{ value: 'rem', label: 'rem', default: 20 },
-								{ value: '%', label: '%', default: 50 },
-							] }
+							label={__(
+								"Min Height — Desktop",
+								"chris-radtke-portfolio-blocks",
+							)}
+							value={minHeight || "300px"}
+							onChange={(value) => setAttributes({ minHeight: value })}
+							units={[
+								{ value: "px", label: "px", default: 300 },
+								{ value: "vh", label: "vh", default: 50 },
+								{ value: "rem", label: "rem", default: 20 },
+								{ value: "%", label: "%", default: 50 },
+							]}
 						/>
 					</PanelRow>
-				</PanelBody>
-
-				{ /* --- Background Image Panel --- */ }
-				<PanelBody
-					title={ __( 'Background Image', 'chris-radtke-portfolio-blocks' ) }
-					initialOpen={ true }
-				>
-					<MediaUploadCheck>
-						<MediaUpload
-							onSelect={ ( media ) =>
-								setAttributes( {
-									backgroundImage: {
-										id: media.id,
-										url: media.url,
-										alt: media.alt,
-									},
-								} )
-							}
-							allowedTypes={ [ 'image' ] }
-							value={ backgroundImage?.id }
-							render={ ( { open } ) => (
-								<>
-									{ backgroundImage?.url ? (
-										<>
-											<img
-												src={ backgroundImage.url }
-												alt={ backgroundImage.alt || '' }
-												style={ {
-													width: '100%',
-													height: 'auto',
-													marginBottom: '8px',
-													display: 'block',
-												} }
-											/>
-											<Button
-												variant="secondary"
-												onClick={ open }
-												style={ { marginRight: '8px' } }
-											>
-												{ __( 'Replace Image', 'chris-radtke-portfolio-blocks' ) }
-											</Button>
-											<Button
-												variant="link"
-												isDestructive
-												onClick={ () =>
-													setAttributes( { backgroundImage: undefined } )
-												}
-											>
-												{ __( 'Remove Image', 'chris-radtke-portfolio-blocks' ) }
-											</Button>
-										</>
-									) : (
-										<Button variant="primary" onClick={ open }>
-											{ __( 'Select Image', 'chris-radtke-portfolio-blocks' ) }
-										</Button>
-									) }
-								</>
-							) }
-						/>
-					</MediaUploadCheck>
-
-					{ backgroundImage?.url && (
-						<>
-							<br />
-							<FocalPointPicker
-								label={ __( 'Focal Point', 'chris-radtke-portfolio-blocks' ) }
-								url={ backgroundImage.url }
-								value={ focalPoint || { x: 0.5, y: 0.5 } }
-								onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
-							/>
-						</>
-					) }
-
-					<SelectControl
-						label={ __( 'Background Size', 'chris-radtke-portfolio-blocks' ) }
-						value={ backgroundSize || 'cover' }
-						options={ [
-							{ label: __( 'Cover' ), value: 'cover' },
-							{ label: __( 'Contain' ), value: 'contain' },
-							{ label: __( 'Auto' ), value: 'auto' },
-							{ label: __( '100%' ), value: '100%' },
-						] }
-						onChange={ ( value ) => setAttributes( { backgroundSize: value } ) }
-					/>
-
-					<SelectControl
-						label={ __( 'Background Repeat', 'chris-radtke-portfolio-blocks' ) }
-						value={ backgroundRepeat || 'no-repeat' }
-						options={ [
-							{ label: __( 'No Repeat' ), value: 'no-repeat' },
-							{ label: __( 'Repeat' ), value: 'repeat' },
-							{ label: __( 'Repeat X' ), value: 'repeat-x' },
-							{ label: __( 'Repeat Y' ), value: 'repeat-y' },
-							{ label: __( 'Space' ), value: 'space' },
-							{ label: __( 'Round' ), value: 'round' },
-						] }
-						onChange={ ( value ) => setAttributes( { backgroundRepeat: value } ) }
-					/>
-
-					<SelectControl
-						label={ __( 'Background Attachment', 'chris-radtke-portfolio-blocks' ) }
-						value={ backgroundAttachment || 'scroll' }
-						options={ [
-							{ label: __( 'Scroll' ), value: 'scroll' },
-							{ label: __( 'Fixed (Parallax)' ), value: 'fixed' },
-							{ label: __( 'Local' ), value: 'local' },
-						] }
-						onChange={ ( value ) =>
-							setAttributes( { backgroundAttachment: value } )
-						}
-					/>
-				</PanelBody>
-
-				{ /* --- Link Panel --- */ }
-				<PanelBody
-					title={ __( 'Link', 'chris-radtke-portfolio-blocks' ) }
-					initialOpen={ true }
-				>
 					<PanelRow>
-						<div style={ { width: '100%' } }>
-							<URLInput
-								label={ __( 'URL', 'chris-radtke-portfolio-blocks' ) }
-								value={ linkUrl || '' }
-								onChange={ ( value ) => setAttributes( { linkUrl: value } ) }
-							/>
-						</div>
+						<UnitControl
+							label={__("Min Height — Mobile", "chris-radtke-portfolio-blocks")}
+							value={minHeightMobile || "200px"}
+							onChange={(value) => setAttributes({ minHeightMobile: value })}
+							units={[
+								{ value: "px", label: "px", default: 200 },
+								{ value: "vh", label: "vh", default: 40 },
+								{ value: "rem", label: "rem", default: 12 },
+								{ value: "%", label: "%", default: 40 },
+							]}
+						/>
 					</PanelRow>
+				</PanelBody>
+
+				{/* --- Background Image Panel --- */}
+				<PanelBody
+					title={__("Background Image", "chris-radtke-portfolio-blocks")}
+					initialOpen={true}
+				>
+					<div style={{ marginBottom: "1rem" }}>
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={(media) =>
+									setAttributes({
+										backgroundImage: {
+											id: media.id,
+											url: media.url,
+											alt: media.alt,
+										},
+									})
+								}
+								allowedTypes={["image"]}
+								value={backgroundImage?.id}
+								render={({ open }) => (
+									<>
+										{backgroundImage?.url ? (
+											<>
+												<img
+													src={backgroundImage.url}
+													alt={backgroundImage.alt || ""}
+													style={{
+														width: "100%",
+														height: "auto",
+														marginBottom: "8px",
+														display: "block",
+													}}
+												/>
+												<Button
+													variant="secondary"
+													onClick={open}
+													style={{ marginRight: "8px" }}
+												>
+													{__("Replace Image", "chris-radtke-portfolio-blocks")}
+												</Button>
+												<Button
+													variant="link"
+													isDestructive
+													onClick={() =>
+														setAttributes({ backgroundImage: undefined })
+													}
+												>
+													{__("Remove Image", "chris-radtke-portfolio-blocks")}
+												</Button>
+											</>
+										) : (
+											<Button variant="primary" onClick={open}>
+												{__("Select Image", "chris-radtke-portfolio-blocks")}
+											</Button>
+										)}
+									</>
+								)}
+							/>
+						</MediaUploadCheck>
+					</div>
+					<div style={{ marginBottom: "1rem" }}>
+						<PanelRow>
+							{backgroundImage?.url && (
+								<>
+									<br />
+									<FocalPointPicker
+										label={__("Focal Point", "chris-radtke-portfolio-blocks")}
+										url={backgroundImage.url}
+										value={focalPoint || { x: 0.5, y: 0.5 }}
+										onChange={(value) => setAttributes({ focalPoint: value })}
+									/>
+								</>
+							)}
+						</PanelRow>
+					</div>
 					<SelectControl
-						label={ __( 'Open in', 'chris-radtke-portfolio-blocks' ) }
-						value={ linkTarget || '_self' }
-						options={ [
-							{ label: __( 'Same Tab' ), value: '_self' },
-							{ label: __( 'New Tab' ), value: '_blank' },
-						] }
-						onChange={ ( value ) => setAttributes( { linkTarget: value } ) }
+						label={__("Background Size", "chris-radtke-portfolio-blocks")}
+						value={backgroundSize || "cover"}
+						options={[
+							{ label: __("Cover"), value: "cover" },
+							{ label: __("Contain"), value: "contain" },
+							{ label: __("Auto"), value: "auto" },
+							{ label: __("100%"), value: "100%" },
+						]}
+						onChange={(value) => setAttributes({ backgroundSize: value })}
+					/>
+
+					<SelectControl
+						label={__("Background Repeat", "chris-radtke-portfolio-blocks")}
+						value={backgroundRepeat || "no-repeat"}
+						options={[
+							{ label: __("No Repeat"), value: "no-repeat" },
+							{ label: __("Repeat"), value: "repeat" },
+							{ label: __("Repeat X"), value: "repeat-x" },
+							{ label: __("Repeat Y"), value: "repeat-y" },
+							{ label: __("Space"), value: "space" },
+							{ label: __("Round"), value: "round" },
+						]}
+						onChange={(value) => setAttributes({ backgroundRepeat: value })}
+					/>
+
+					<SelectControl
+						label={__("Background Attachment", "chris-radtke-portfolio-blocks")}
+						value={backgroundAttachment || "scroll"}
+						options={[
+							{ label: __("Scroll"), value: "scroll" },
+							{ label: __("Fixed (Parallax)"), value: "fixed" },
+							{ label: __("Local"), value: "local" },
+						]}
+						onChange={(value) => setAttributes({ backgroundAttachment: value })}
+					/>
+				</PanelBody>
+
+				{/* --- Link Panel --- */}
+				<PanelBody
+					title={__("Link", "chris-radtke-portfolio-blocks")}
+					initialOpen={true}
+				>
+					<div className="image-button-url-input">
+						<URLInput
+							label={__("URL", "chris-radtke-portfolio-blocks")}
+							value={linkUrl || ""}
+							onChange={(value) => setAttributes({ linkUrl: value })}
+						/>
+					</div>
+
+					<SelectControl
+						label={__("Open in", "chris-radtke-portfolio-blocks")}
+						value={linkTarget || "_self"}
+						options={[
+							{ label: __("Same Tab"), value: "_self" },
+							{ label: __("New Tab"), value: "_blank" },
+						]}
+						onChange={(value) => setAttributes({ linkTarget: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>
 
-			{ /* Block preview in editor */ }
-			<a { ...blockProps }>
-				{ ! backgroundImage?.url && (
+			{/* Block preview in editor */}
+			<a {...blockProps}>
+				{!backgroundImage?.url && (
 					<span
-						style={ {
-							position: 'absolute',
-							top: '50%',
-							left: '50%',
-							transform: 'translate(-50%, -50%)',
-							color: '#999',
-							fontSize: '13px',
-							pointerEvents: 'none',
-						} }
+						style={{
+							position: "absolute",
+							top: "50%",
+							left: "50%",
+							transform: "translate(-50%, -50%)",
+							color: "#999",
+							fontSize: "13px",
+							pointerEvents: "none",
+						}}
 					>
-						{ __( 'Image Button — select a background image in the panel', 'chris-radtke-portfolio-blocks' ) }
+						{__(
+							"Image Button — select a background image in the panel",
+							"chris-radtke-portfolio-blocks",
+						)}
 					</span>
-				) }
+				)}
 			</a>
 		</>
 	);

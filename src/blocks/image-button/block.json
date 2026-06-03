@@ -11,9 +11,52 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"minHeight": {
+			"type": "string",
+			"default": "300px"
+		},
+		"minHeightMobile": {
+			"type": "string",
+			"default": "200px"
+		},
+		"backgroundImage": {
+			"type": "object",
+			"default": null
+		},
+		"backgroundSize": {
+			"type": "string",
+			"default": "cover"
+		},
+		"backgroundPosition": {
+			"type": "string",
+			"default": "center center"
+		},
+		"backgroundRepeat": {
+			"type": "string",
+			"default": "no-repeat"
+		},
+		"backgroundAttachment": {
+			"type": "string",
+			"default": "scroll"
+		},
+		"focalPoint": {
+			"type": "object",
+			"default": { "x": 0.5, "y": 0.5 }
+		},
+		"linkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"linkTarget": {
+			"type": "string",
+			"default": "_self"
+		}
+	},
 	"textdomain": "chris-radtke-portfolio-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"viewScript": "file:./view.js"
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
 }
