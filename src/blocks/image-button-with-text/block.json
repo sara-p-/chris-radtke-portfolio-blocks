@@ -1,0 +1,77 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chris-radtke-portfolio-blocks/image-button-with-text",
+	"version": "0.1.0",
+	"title": "Image Button with Text",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "A 50/50 block with text and an Image Button.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"reversed": {
+			"type": "boolean",
+			"default": false
+		},
+		"blockGap": {
+			"type": "string",
+			"default": ""
+		},
+		"imageMinHeightDesktop": {
+			"type": "string",
+			"default": "400px"
+		},
+		"imageMinHeightMobile": {
+			"type": "string",
+			"default": "250px"
+		},
+		"backgroundImage": {
+			"type": "object",
+			"default": {}
+		},
+		"backgroundImageFocalPoint": {
+			"type": "object",
+			"default": {
+				"x": 0.5,
+				"y": 0.5
+			}
+		},
+		"backgroundImageSize": {
+			"type": "string",
+			"default": "cover"
+		},
+		"backgroundImageRepeat": {
+			"type": "string",
+			"default": "no-repeat"
+		},
+		"backgroundImagePosition": {
+			"type": "string",
+			"default": "center center"
+		},
+		"linkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"linkTarget": {
+			"type": "string",
+			"default": ""
+		},
+		"linkRel": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"textdomain": "chris-radtke-portfolio-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

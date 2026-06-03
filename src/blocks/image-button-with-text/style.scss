@@ -1,0 +1,182 @@
+/**
+ * style.scss — Image Button with Text block
+ *
+ * Compiled by @wordpress/scripts (or your build tool of choice).
+ * Uses CSS custom properties set either by render.php (inline styles on the
+ * wrapper) or by view.js for responsive values that require media queries.
+ *
+ * Breakpoint variables — adjust to match your theme's breakpoints.
+ */
+
+// ── Breakpoints ──────────────────────────────────────────────────────────────
+
+$ibt-breakpoint-mobile: 768px;
+
+// ── Custom property defaults ─────────────────────────────────────────────────
+
+$ibt-min-height-desktop-default: 400px;
+$ibt-min-height-mobile-default: 250px;
+
+// ── Block wrapper ────────────────────────────────────────────────────────────
+
+.ibt-block {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	width: 100%;
+	gap: 3rem;
+
+	// Reversed layout
+	&--reversed {
+		flex-direction: row-reverse;
+	}
+
+	// Stack on mobile
+	@media ( max-width: #{$ibt-breakpoint-mobile} ) {
+		flex-direction: column !important; // override reversed too
+	}
+}
+
+// ── Image Button ─────────────────────────────────────────────────────────────
+
+.ibt-block__image-button {
+	// Take up 50% of the available space
+	flex: 0 0 50%;
+	position: relative;
+	overflow: hidden;
+
+	// Desktop min-height (CSS var set by render.php / edit.js)
+	min-height: var(--ibt-min-height-desktop, #{$ibt-min-height-desktop-default});
+
+	// Background image defaults (overridden by inline styles from PHP / edit.js)
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+
+	// Smooth fade-in after lazy-load
+	transition: opacity 0.4s ease;
+	opacity: 0;
+
+	&--loaded,
+	&[style*="background-image"] {
+		opacity: 1;
+	}
+
+	// Mobile min-height
+	@media ( max-width: #{$ibt-breakpoint-mobile} ) {
+		flex: none;
+		width: 100%;
+		min-height: var(--ibt-min-height-mobile, #{$ibt-min-height-mobile-default});
+	}
+
+	// Editor placeholder (shown when no background image is selected)
+	.ibt-block__image-placeholder {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+		background-color: var(--wp--preset--color--light-gray, #f0f0f0);
+		border: 2px dashed var(--wp--preset--color--contrast, #888);
+		color: var(--wp--preset--color--contrast, #333);
+		font-size: 0.9rem;
+		text-align: center;
+		pointer-events: none;
+	}
+
+	// Editor "link badge" overlay
+	.ibt-block__link-badge {
+		position: absolute;
+		bottom: 0.75rem;
+		left: 0.75rem;
+		max-width: calc(100% - 1.5rem);
+		padding: 0.25rem 0.5rem;
+		background: rgba(0, 0, 0, 0.6);
+		color: #fff;
+		font-size: 0.75rem;
+		border-radius: 3px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		pointer-events: none;
+	}
+}
+
+// ── Anchor / Link ─────────────────────────────────────────────────────────────
+
+.ibt-block__image-link {
+	// Stretch to fill the entire image-button area
+	display: block;
+	position: absolute;
+	inset: 0;
+
+	// Remove default anchor underline / colour
+	text-decoration: none;
+	color: inherit;
+
+	// Subtle hover overlay
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0);
+		transition: background 0.25s ease;
+	}
+
+	&:hover::after,
+	&:focus::after {
+		background: rgba(0, 0, 0, 0.12);
+	}
+
+	// Visible focus ring for keyboard users
+	&:focus-visible {
+		outline: 3px solid var(--wp--preset--color--primary, #0073aa);
+		outline-offset: -3px;
+	}
+}
+
+// ── Content / Inner Blocks ────────────────────────────────────────────────────
+
+.ibt-block__content {
+	flex: 1 1 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+
+	.wp-block-chris-radtke-portfolio-blocks-image-button-with-text {
+		// 3rem spacing between inner block elements; none after the last
+		> * {
+			margin-top: 0;
+			margin-block-start: 0 !important;
+			margin-bottom: 2rem;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	// Stack layout: full width on mobile
+	@media ( max-width: #{$ibt-breakpoint-mobile} ) {
+		flex: none;
+		width: 100%;
+	}
+}
+
+// ── Editor-only overrides ─────────────────────────────────────────────────────
+// Scoped to .editor-styles-wrapper so they never affect the frontend.
+
+.editor-styles-wrapper {
+	.ibt-block__image-button {
+		// Always show the image immediately in the editor (no lazy-load)
+		opacity: 1;
+	}
+
+	// Show a subtle border around the inner-blocks drop zone
+	.ibt-block__content {
+		outline: 1px dashed rgba(0, 0, 0, 0.15);
+		outline-offset: -1px;
+		min-height: 120px;
+	}
+}
