@@ -1,12 +1,12 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "create-block/chris-radtke-portfolio-blocks",
+	"name": "chris-radtke-portfolio-blocks/image-button",
 	"version": "0.1.0",
-	"title": "Chris Radtke Portfolio Blocks",
+	"title": "Image Button",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Use an image as a button.",
 	"example": {},
 	"supports": {
 		"html": false
