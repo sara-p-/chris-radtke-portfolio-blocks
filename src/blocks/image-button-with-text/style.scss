@@ -24,7 +24,7 @@ $ibt-min-height-mobile-default: 250px;
 	flex-direction: row;
 	align-items: stretch;
 	width: 100%;
-	gap: 3rem;
+	gap: clamp(1.44rem, calc(0.4rem + 3.9vw), 3rem);
 
 	// Reversed layout
 	&--reversed {
@@ -41,7 +41,7 @@ $ibt-min-height-mobile-default: 250px;
 
 .ibt-block__image-button {
 	// Take up 50% of the available space
-	flex: 0 0 50%;
+	flex: 0 0 48%;
 	position: relative;
 	overflow: hidden;
 
@@ -139,17 +139,29 @@ $ibt-min-height-mobile-default: 250px;
 // ── Content / Inner Blocks ────────────────────────────────────────────────────
 
 .ibt-block__content {
-	flex: 1 1 50%;
+	flex: 1 1 52%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 
+	// For the editor
+	// 2rem spacing between inner block elements; none after the last
+	&.block-editor-block-list__layout > * {
+		margin-top: 0;
+		margin-block-start: 0 !important;
+		margin-bottom: clamp(1rem, calc(0.667rem + 1.25vw), 1.5rem);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
 	.wp-block-chris-radtke-portfolio-blocks-image-button-with-text {
-		// 3rem spacing between inner block elements; none after the last
+		// 2rem spacing between inner block elements; none after the last
 		> * {
 			margin-top: 0;
 			margin-block-start: 0 !important;
-			margin-bottom: 2rem;
+			margin-bottom: clamp(1rem, calc(0.667rem + 1.25vw), 1.5rem);
 
 			&:last-child {
 				margin-bottom: 0;
