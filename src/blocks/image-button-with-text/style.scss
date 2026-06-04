@@ -121,12 +121,12 @@ $ibt-min-height-mobile-default: 250px;
 		position: absolute;
 		inset: 0;
 		background: rgba(0, 0, 0, 0);
-		transition: background 0.25s ease;
+		transition: background 0.2s ease;
 	}
 
 	&:hover::after,
 	&:focus::after {
-		background: rgba(0, 0, 0, 0.12);
+		background: rgba(0, 0, 0, 0.22);
 	}
 
 	// Visible focus ring for keyboard users

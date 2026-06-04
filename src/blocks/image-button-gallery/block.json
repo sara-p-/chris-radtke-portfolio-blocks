@@ -16,6 +16,10 @@
 		"isReversed": {
 			"type": "boolean",
 			"default": false
+		},
+		"items": {
+			"type": "array",
+			"default": []
 		}
 	},
 	"textdomain": "chris-radtke-portfolio-blocks",

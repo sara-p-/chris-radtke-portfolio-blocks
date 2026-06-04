@@ -30,3 +30,41 @@ function create_block_chris_radtke_portfolio_blocks_block_init() {
 	wp_register_block_types_from_metadata_collection( __DIR__ . '/build/blocks', __DIR__ . '/build/blocks-manifest.php' );
 }
 add_action( 'init', 'create_block_chris_radtke_portfolio_blocks_block_init' );
+
+
+/**
+ * Image Button Gallery — helpers
+ */
+function ibg_build_style( $item ) {
+    $styles = [];
+
+    if ( ! empty( $item['bgImageUrl'] ) ) {
+        $styles[] = 'background-image: url(' . esc_url( $item['bgImageUrl'] ) . ')';
+        $styles[] = 'background-position: '    . esc_attr( $item['bgPosition'] );
+        $styles[] = 'background-size: '        . esc_attr( $item['bgSize'] );
+        $styles[] = 'background-repeat: '      . esc_attr( $item['bgRepeat'] );
+        $styles[] = 'background-attachment: '  . esc_attr( $item['bgAttachment'] );
+    }
+
+    if ( ! empty( $item['minHeightDesktop'] ) ) {
+        $styles[] = 'min-height: ' . esc_attr( $item['minHeightDesktop'] );
+    }
+
+    if ( ! empty( $item['minHeightMobile'] ) ) {
+        $styles[] = '--ibg-min-height-mobile: ' . esc_attr( $item['minHeightMobile'] );
+    }
+
+    return implode( '; ', $styles );
+}
+
+function ibg_build_rel( $item ) {
+    $rels = [];
+    if ( $item['linkTarget'] === '_blank' ) {
+        $rels[] = 'noopener';
+        $rels[] = 'noreferrer';
+    }
+    if ( $item['linkRel'] === 'nofollow' ) {
+        $rels[] = 'nofollow';
+    }
+    return implode( ' ', $rels );
+}
