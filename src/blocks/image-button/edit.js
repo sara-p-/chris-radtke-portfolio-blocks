@@ -253,6 +253,7 @@ export default function Edit({ attributes, setAttributes }) {
 					</span>
 				)}
 			</a>
+			{linkUrl && <span className="image-button__badge">{linkUrl}</span>}
 		</>
 	);
 }

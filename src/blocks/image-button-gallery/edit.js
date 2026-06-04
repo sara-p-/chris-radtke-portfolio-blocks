@@ -327,7 +327,7 @@ export default function Edit({ attributes, setAttributes }) {
 							>
 								{items[0].linkUrl && (
 									<span className="image-button-gallery__link-badge">
-										🔗 {items[0].linkUrl}
+										{items[0].linkUrl}
 									</span>
 								)}
 							</div>
@@ -340,7 +340,7 @@ export default function Edit({ attributes, setAttributes }) {
 						>
 							{items[1].linkUrl && (
 								<span className="image-button-gallery__link-badge">
-									🔗 {items[1].linkUrl}
+									{items[1].linkUrl}
 								</span>
 							)}
 						</div>
@@ -356,7 +356,7 @@ export default function Edit({ attributes, setAttributes }) {
 						>
 							{items[2].linkUrl && (
 								<span className="image-button-gallery__link-badge">
-									🔗 {items[2].linkUrl}
+									{items[2].linkUrl}
 								</span>
 							)}
 						</div>
@@ -369,7 +369,7 @@ export default function Edit({ attributes, setAttributes }) {
 							>
 								{items[3].linkUrl && (
 									<span className="image-button-gallery__link-badge">
-										🔗 {items[3].linkUrl}
+										{items[3].linkUrl}
 									</span>
 								)}
 							</div>

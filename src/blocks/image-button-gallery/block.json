@@ -4,8 +4,8 @@
 	"name": "chris-radtke-portfolio-blocks/image-button-gallery",
 	"version": "0.1.0",
 	"title": "Image Button Gallery",
-	"category": "widgets",
-	"icon": "smiley",
+	"category": "chris-radtke-portfolio-blocks",
+	"icon": "images-alt",
 	"description": "A grid of Image Buttons.",
 	"example": {},
 	"supports": {

@@ -8,8 +8,6 @@
  *   $block       (object) — WP_Block instance
  */
 
-error_log( print_r( $attributes, true ) );
-
 $is_reversed = ! empty( $attributes['isReversed'] );
 $raw_items   = ! empty( $attributes['items'] ) ? $attributes['items'] : [];
 

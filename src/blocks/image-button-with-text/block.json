@@ -4,8 +4,8 @@
 	"name": "chris-radtke-portfolio-blocks/image-button-with-text",
 	"version": "0.1.0",
 	"title": "Image Button with Text",
-	"category": "widgets",
-	"icon": "smiley",
+	"category": "chris-radtke-portfolio-blocks",
+	"icon": "columns",
 	"description": "A 50/50 block with text and an Image Button.",
 	"example": {},
 	"supports": {

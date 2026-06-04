@@ -33,6 +33,22 @@ add_action( 'init', 'create_block_chris_radtke_portfolio_blocks_block_init' );
 
 
 /**
+ * Register custom block category.
+ */
+function crpb_register_block_category( $categories ) {
+    $custom_category = [
+        'slug'  => 'chris-radtke-portfolio-blocks',
+        'title' => __( 'Chris Radtke Portfolio Blocks', 'chris-radtke-portfolio-blocks' ),
+        'icon'  => null,
+    ];
+
+    // Prepend to the beginning of the list
+    return array_merge( [ $custom_category ], $categories );
+}
+add_filter( 'block_categories_all', 'crpb_register_block_category', 10, 2 );
+
+
+/**
  * Image Button Gallery — helpers
  */
 function ibg_build_style( $item ) {

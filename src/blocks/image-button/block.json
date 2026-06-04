@@ -4,8 +4,8 @@
 	"name": "chris-radtke-portfolio-blocks/image-button",
 	"version": "0.1.0",
 	"title": "Image Button",
-	"category": "widgets",
-	"icon": "smiley",
+	"category": "chris-radtke-portfolio-blocks",
+	"icon": "image",
 	"description": "Use an image as a button.",
 	"example": {},
 	"supports": {
