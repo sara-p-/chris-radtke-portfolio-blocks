@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Image Button Gallery",
 	"category": "chris-radtke-portfolio-blocks",
-	"icon": "images-alt",
 	"description": "A grid of Image Buttons.",
 	"example": {},
 	"supports": {
