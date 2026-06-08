@@ -14,6 +14,7 @@ import { useState, useEffect } from "@wordpress/element";
 import apiFetch from "@wordpress/api-fetch";
 import { addQueryArgs } from "@wordpress/url";
 import { layout } from "@wordpress/icons";
+import { decodeEntities } from "@wordpress/html-entities";
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
@@ -70,6 +71,7 @@ export default function Edit({ attributes, setAttributes }) {
 				order: order.toLowerCase(),
 				projects: projectTermId,
 				_embed: true,
+				_fields: "id,title,meta,_links,_embedded",
 			}),
 		})
 			.then((posts) => {
@@ -139,7 +141,7 @@ export default function Edit({ attributes, setAttributes }) {
 						value={postsPerPage}
 						onChange={(val) => setAttributes({ postsPerPage: val })}
 						min={1}
-						max={50}
+						max={100}
 					/>
 
 					<SelectControl
@@ -158,10 +160,10 @@ export default function Edit({ attributes, setAttributes }) {
 								label: __("Menu Order", "chris-radtke-portfolio-blocks"),
 								value: "menu_order",
 							},
-							{
-								label: __("Random", "chris-radtke-portfolio-blocks"),
-								value: "rand",
-							},
+							// {
+							// 	label: __("Random", "chris-radtke-portfolio-blocks"),
+							// 	value: "rand",
+							// },
 						]}
 						onChange={(val) => setAttributes({ orderBy: val })}
 					/>
@@ -238,35 +240,52 @@ export default function Edit({ attributes, setAttributes }) {
 								{previewPosts.map((post) => {
 									const thumbUrl =
 										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
+											?.sizes?.medium?.source_url ??
+										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
 											?.sizes?.thumbnail?.source_url;
+									const seriesYears = post?.meta?.["_series_years"];
 
 									return (
 										<li key={post.id} className="series-loop-editor-item">
-											{showThumbnail && thumbUrl && (
-												<img
-													src={thumbUrl}
-													alt=""
-													className="series-loop-editor-thumb"
-												/>
-											)}
-											{showTitle && (
-												<strong
-													dangerouslySetInnerHTML={{
-														__html: post.title.rendered,
-													}}
-												/>
-											)}
+											<div className="series-loop-editor-item-wrapper">
+												{showThumbnail && thumbUrl && (
+													<div
+														className="series-loop-editor-thumb"
+														style={{ backgroundImage: `url(${thumbUrl})` }}
+														aria-hidden="true"
+														tabIndex={-1}
+													></div>
+												)}
+												{showTitle && (
+													<h6 className="series-loop-editor-title">
+														{seriesYears && (
+															<>
+																<span className="series-loop-editor-years">
+																	{seriesYears}
+																</span>
+																<span
+																	className="series-loop-editor-separator"
+																	aria-hidden="true"
+																>
+																	{" | "}
+																</span>
+															</>
+														)}
+														<span>{decodeEntities(post.title.rendered)}</span>
+													</h6>
+												)}
+											</div>
 										</li>
 									);
 								})}
-								{postsPerPage > 3 && (
+								{previewPosts.length > postsPerPage && (
 									<li className="series-loop-editor-more">
 										{sprintf(
 											__(
 												"+ %d more posts on the frontend",
 												"chris-radtke-portfolio-blocks",
 											),
-											postsPerPage - 3,
+											postsPerPage - previewPosts.length,
 										)}
 									</li>
 								)}

@@ -1,8 +1,84 @@
-/**
- * The following styles get applied inside the editor only.
- *
- * Replace them with your own styles or remove the file completely.
- */
+// =============================================================================
+// Series Loop Block — editor.scss
+// =============================================================================
 
-.wp-block-chris-radtke-portfolio-blocks-series-loop {
+.series-loop-editor-preview {
+}
+
+.series-loop-editor-inner {
+}
+
+.series-loop-editor-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.series-loop-editor-label {
+	font-weight: 600;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	opacity: 0.5;
+}
+
+.series-loop-editor-term {
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.series-loop-editor-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 360px));
+	gap: 1rem;
+}
+
+.series-loop-editor-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 0;
+}
+
+.series-loop-editor-item-wrapper {
+	width: 100%;
+}
+
+.series-loop-editor-thumb {
+	display: block;
+	width: 100%;
+	max-width: 360px;
+	height: 0;
+	padding-bottom: 360px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+.series-loop-editor-title {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 4px;
+}
+
+.series-loop-editor-years {
+}
+
+.series-loop-editor-separator {
+}
+
+.series-loop-editor-empty {
+	opacity: 0.5;
+	font-style: italic;
+}
+
+.series-loop-editor-more {
+	opacity: 0.5;
+	font-size: 12px;
+	padding-top: 6px;
 }

@@ -1,9 +1,74 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+// =============================================================================
+// Series Loop Block — style.scss
+// =============================================================================
 
-.wp-block-chris-radtke-portfolio-blocks-series-loop {
+.series-loop {
+	// ── List ─────────────────────────────────────────────────────────────────
+
+	&__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	// ── Item ─────────────────────────────────────────────────────────────────
+
+	&__item {
+		width: 100%;
+		max-width: 360px;
+	}
+
+	// ── Article ──────────────────────────────────────────────────────────────
+
+	&__article {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	// ── Thumbnail ────────────────────────────────────────────────────────────
+
+	&__thumbnail-link {
+		display: block;
+		flex-shrink: 0;
+	}
+
+	&__thumbnail {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	// ── Body ─────────────────────────────────────────────────────────────────
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	// ── Title ────────────────────────────────────────────────────────────────
+
+	&__title {
+		margin: 0;
+	}
+
+	&__title-link {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0;
+		text-decoration: none;
+		color: inherit;
+
+		&:hover {
+		}
+	}
+
+	&__years {
+	}
+
+	&__title-separator {
+	}
+
+	&__title-text {
+	}
 }

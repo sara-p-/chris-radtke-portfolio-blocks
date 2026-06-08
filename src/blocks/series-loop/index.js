@@ -14,6 +14,7 @@ import { layout } from "@wordpress/icons";
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import "./style.scss";
+import "./editor.scss";
 
 /**
  * Internal dependencies

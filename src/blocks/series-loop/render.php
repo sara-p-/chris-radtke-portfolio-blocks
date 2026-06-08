@@ -70,36 +70,34 @@ $wrapper_attributes = get_block_wrapper_attributes( [
 		while ( $series_query->have_posts() ) :
 			$series_query->the_post();
 
-			$post_id    = get_the_ID();
-			$post_url   = get_permalink();
-			$post_title = get_the_title();
+			$post_id      = get_the_ID();
+			$post_url     = get_permalink();
+			$post_title   = get_the_title();
+			$series_years = get_post_meta( $post_id, '_series_years', true );
 			?>
+
     <li class="series-loop__item">
       <article class="series-loop__article" id="series-<?php echo esc_attr( $post_id ); ?>">
 
         <?php if ( $show_thumbnail && has_post_thumbnail() ) : ?>
-        <a class="series-loop__thumbnail-link" href="<?php echo esc_url( $post_url ); ?>" tabindex="-1"
-          aria-hidden="true">
-          <?php
-							the_post_thumbnail(
-								'medium',
-								[
-									'class' => 'series-loop__thumbnail',
-									'alt'   => esc_attr( $post_title ),
-								]
-							);
-							?>
+        <a class="series-loop__thumbnail-link" href="<?php echo esc_url( $post_url ); ?>"
+          style="background-image: url('<?php echo esc_url( get_the_post_thumbnail_url( $post_id, 'medium' ) ); ?>')"
+          tabindex="-1" aria-hidden="true">
         </a>
         <?php endif; ?>
 
         <div class="series-loop__body">
 
           <?php if ( $show_title ) : ?>
-          <h3 class="series-loop__title">
+          <h6 class="series-loop__title">
             <a class="series-loop__title-link" href="<?php echo esc_url( $post_url ); ?>">
-              <?php echo esc_html( $post_title ); ?>
+              <?php if ( $series_years ) : ?>
+              <span class="series-loop__years"><?php echo esc_html( $series_years ); ?></span>
+              <span class="series-loop__title-separator" aria-hidden="true"> | </span>
+              <?php endif; ?>
+              <span class="series-loop__title-text"><?php echo esc_html( $post_title ); ?></span>
             </a>
-          </h3>
+          </h6>
           <?php endif; ?>
 
         </div><!-- .series-loop__body -->
