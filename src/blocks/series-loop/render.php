@@ -54,7 +54,6 @@ if ( ! $series_query->have_posts() ) {
 
 $show_thumbnail = isset( $attributes['showThumbnail'] ) ? (bool) $attributes['showThumbnail'] : true;
 $show_title     = isset( $attributes['showTitle'] ) ? (bool) $attributes['showTitle'] : true;
-$show_excerpt   = isset( $attributes['showExcerpt'] ) ? (bool) $attributes['showExcerpt'] : true;
 
 // ── Wrapper attributes (supports color, spacing, etc.) ───────────────────────
 
@@ -101,12 +100,6 @@ $wrapper_attributes = get_block_wrapper_attributes( [
               <?php echo esc_html( $post_title ); ?>
             </a>
           </h3>
-          <?php endif; ?>
-
-          <?php if ( $show_excerpt ) : ?>
-          <div class="series-loop__excerpt">
-            <?php the_excerpt(); ?>
-          </div>
           <?php endif; ?>
 
         </div><!-- .series-loop__body -->

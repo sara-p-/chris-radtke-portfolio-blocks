@@ -1,4 +1,4 @@
-import { __ } from "@wordpress/i18n";
+import { __, sprintf } from "@wordpress/i18n";
 import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
 import {
 	PanelBody,
@@ -10,16 +10,19 @@ import {
 } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
+import { useState, useEffect } from "@wordpress/element";
+import apiFetch from "@wordpress/api-fetch";
+import { addQueryArgs } from "@wordpress/url";
 import { layout } from "@wordpress/icons";
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
 		projectTerm,
+		projectTermId,
 		postsPerPage,
 		orderBy,
 		order,
 		showTitle,
-		showExcerpt,
 		showThumbnail,
 	} = attributes;
 
@@ -27,7 +30,7 @@ export default function Edit({ attributes, setAttributes }) {
 		className: "series-loop-editor-preview",
 	});
 
-	// Fetch all terms from the 'projects' taxonomy via the REST API.
+	// ── Fetch taxonomy terms via core-data ──
 	const { terms, termsLoading } = useSelect((select) => {
 		const { getEntityRecords, isResolving } = select(coreStore);
 		const query = {
@@ -47,37 +50,47 @@ export default function Edit({ attributes, setAttributes }) {
 		};
 	}, []);
 
-	// Fetch preview posts based on current attributes.
-	const { previewPosts, postsLoading } = useSelect(
-		(select) => {
-			if (!projectTerm) {
-				return { previewPosts: [], postsLoading: false };
-			}
+	// ── Fetch preview posts via apiFetch ──
+	const [previewPosts, setPreviewPosts] = useState([]);
+	const [postsLoading, setPostsLoading] = useState(false);
 
-			const { getEntityRecords, isResolving } = select(coreStore);
-			const query = {
-				post_type: "series",
-				per_page: Math.min(postsPerPage, 3), // cap preview at 3
+	useEffect(() => {
+		if (!projectTermId) {
+			setPreviewPosts([]);
+			return;
+		}
+
+		let cancelled = false;
+		setPostsLoading(true);
+
+		apiFetch({
+			path: addQueryArgs("/wp/v2/series", {
+				per_page: Math.min(postsPerPage, 3),
 				orderby: orderBy,
-				order,
-				projects: projectTerm, // REST API taxonomy param
-				_fields: "id,title,excerpt,featured_media,_links",
+				order: order.toLowerCase(),
+				projects: projectTermId,
 				_embed: true,
-			};
+			}),
+		})
+			.then((posts) => {
+				if (!cancelled) {
+					setPreviewPosts(posts);
+					setPostsLoading(false);
+				}
+			})
+			.catch(() => {
+				if (!cancelled) {
+					setPreviewPosts([]);
+					setPostsLoading(false);
+				}
+			});
 
-			return {
-				previewPosts: getEntityRecords("postType", "series", query),
-				postsLoading: isResolving("getEntityRecords", [
-					"postType",
-					"series",
-					query,
-				]),
-			};
-		},
-		[projectTerm, postsPerPage, orderBy, order],
-	);
+		return () => {
+			cancelled = true;
+		};
+	}, [projectTermId, postsPerPage, orderBy, order]);
 
-	// Build term options for the SelectControl.
+	// ── Term options for SelectControl ──
 	const termOptions = [
 		{
 			label: __("— Select a term —", "chris-radtke-portfolio-blocks"),
@@ -107,7 +120,13 @@ export default function Edit({ attributes, setAttributes }) {
 							label={__("Projects Term", "chris-radtke-portfolio-blocks")}
 							value={projectTerm}
 							options={termOptions}
-							onChange={(val) => setAttributes({ projectTerm: val })}
+							onChange={(val) => {
+								const selected = terms?.find((t) => t.slug === val);
+								setAttributes({
+									projectTerm: val,
+									projectTermId: selected ? selected.id : 0,
+								});
+							}}
 							help={__(
 								"Filter Series posts by this Projects taxonomy term.",
 								"chris-radtke-portfolio-blocks",
@@ -178,11 +197,6 @@ export default function Edit({ attributes, setAttributes }) {
 						checked={showTitle}
 						onChange={(val) => setAttributes({ showTitle: val })}
 					/>
-					<ToggleControl
-						label={__("Show Excerpt", "chris-radtke-portfolio-blocks")}
-						checked={showExcerpt}
-						onChange={(val) => setAttributes({ showExcerpt: val })}
-					/>
 				</PanelBody>
 			</InspectorControls>
 
@@ -210,7 +224,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 						{postsLoading && <Spinner />}
 
-						{!postsLoading && previewPosts?.length === 0 && (
+						{!postsLoading && previewPosts.length === 0 && (
 							<p className="series-loop-editor-empty">
 								{__(
 									"No Series posts found for this term.",
@@ -219,7 +233,7 @@ export default function Edit({ attributes, setAttributes }) {
 							</p>
 						)}
 
-						{!postsLoading && previewPosts?.length > 0 && (
+						{!postsLoading && previewPosts.length > 0 && (
 							<ul className="series-loop-editor-list">
 								{previewPosts.map((post) => {
 									const thumbUrl =
@@ -235,30 +249,19 @@ export default function Edit({ attributes, setAttributes }) {
 													className="series-loop-editor-thumb"
 												/>
 											)}
-											<div className="series-loop-editor-text">
-												{showTitle && (
-													<strong
-														dangerouslySetInnerHTML={{
-															__html: post.title.rendered,
-														}}
-													/>
-												)}
-												{showExcerpt && (
-													<span
-														className="series-loop-editor-excerpt"
-														dangerouslySetInnerHTML={{
-															__html: post.excerpt.rendered,
-														}}
-													/>
-												)}
-											</div>
+											{showTitle && (
+												<strong
+													dangerouslySetInnerHTML={{
+														__html: post.title.rendered,
+													}}
+												/>
+											)}
 										</li>
 									);
 								})}
 								{postsPerPage > 3 && (
 									<li className="series-loop-editor-more">
 										{sprintf(
-											/* translators: %d: number of additional posts */
 											__(
 												"+ %d more posts on the frontend",
 												"chris-radtke-portfolio-blocks",

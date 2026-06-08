@@ -18,6 +18,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"projectTermId": {
+			"type": "number",
+			"default": 0
+		},
 		"postsPerPage": {
 			"type": "number",
 			"default": 10
@@ -31,10 +35,6 @@
 			"default": "DESC"
 		},
 		"showTitle": {
-			"type": "boolean",
-			"default": true
-		},
-		"showExcerpt": {
 			"type": "boolean",
 			"default": true
 		},
