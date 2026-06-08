@@ -1,0 +1,277 @@
+import { __ } from "@wordpress/i18n";
+import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
+import {
+	PanelBody,
+	SelectControl,
+	RangeControl,
+	ToggleControl,
+	Spinner,
+	Placeholder,
+} from "@wordpress/components";
+import { useSelect } from "@wordpress/data";
+import { store as coreStore } from "@wordpress/core-data";
+import { layout } from "@wordpress/icons";
+
+export default function Edit({ attributes, setAttributes }) {
+	const {
+		projectTerm,
+		postsPerPage,
+		orderBy,
+		order,
+		showTitle,
+		showExcerpt,
+		showThumbnail,
+	} = attributes;
+
+	const blockProps = useBlockProps({
+		className: "series-loop-editor-preview",
+	});
+
+	// Fetch all terms from the 'projects' taxonomy via the REST API.
+	const { terms, termsLoading } = useSelect((select) => {
+		const { getEntityRecords, isResolving } = select(coreStore);
+		const query = {
+			per_page: -1,
+			orderby: "name",
+			order: "asc",
+			_fields: "id,name,slug",
+		};
+
+		return {
+			terms: getEntityRecords("taxonomy", "projects", query),
+			termsLoading: isResolving("getEntityRecords", [
+				"taxonomy",
+				"projects",
+				query,
+			]),
+		};
+	}, []);
+
+	// Fetch preview posts based on current attributes.
+	const { previewPosts, postsLoading } = useSelect(
+		(select) => {
+			if (!projectTerm) {
+				return { previewPosts: [], postsLoading: false };
+			}
+
+			const { getEntityRecords, isResolving } = select(coreStore);
+			const query = {
+				post_type: "series",
+				per_page: Math.min(postsPerPage, 3), // cap preview at 3
+				orderby: orderBy,
+				order,
+				projects: projectTerm, // REST API taxonomy param
+				_fields: "id,title,excerpt,featured_media,_links",
+				_embed: true,
+			};
+
+			return {
+				previewPosts: getEntityRecords("postType", "series", query),
+				postsLoading: isResolving("getEntityRecords", [
+					"postType",
+					"series",
+					query,
+				]),
+			};
+		},
+		[projectTerm, postsPerPage, orderBy, order],
+	);
+
+	// Build term options for the SelectControl.
+	const termOptions = [
+		{
+			label: __("— Select a term —", "chris-radtke-portfolio-blocks"),
+			value: "",
+		},
+		...(terms ?? []).map((term) => ({
+			label: term.name,
+			value: term.slug,
+		})),
+	];
+
+	const selectedTermLabel =
+		terms?.find((t) => t.slug === projectTerm)?.name ?? projectTerm;
+
+	return (
+		<>
+			{/* ── Sidebar Controls ── */}
+			<InspectorControls>
+				<PanelBody
+					title={__("Query Settings", "chris-radtke-portfolio-blocks")}
+					initialOpen={true}
+				>
+					{termsLoading ? (
+						<Spinner />
+					) : (
+						<SelectControl
+							label={__("Projects Term", "chris-radtke-portfolio-blocks")}
+							value={projectTerm}
+							options={termOptions}
+							onChange={(val) => setAttributes({ projectTerm: val })}
+							help={__(
+								"Filter Series posts by this Projects taxonomy term.",
+								"chris-radtke-portfolio-blocks",
+							)}
+						/>
+					)}
+
+					<RangeControl
+						label={__("Posts Per Page", "chris-radtke-portfolio-blocks")}
+						value={postsPerPage}
+						onChange={(val) => setAttributes({ postsPerPage: val })}
+						min={1}
+						max={50}
+					/>
+
+					<SelectControl
+						label={__("Order By", "chris-radtke-portfolio-blocks")}
+						value={orderBy}
+						options={[
+							{
+								label: __("Date", "chris-radtke-portfolio-blocks"),
+								value: "date",
+							},
+							{
+								label: __("Title", "chris-radtke-portfolio-blocks"),
+								value: "title",
+							},
+							{
+								label: __("Menu Order", "chris-radtke-portfolio-blocks"),
+								value: "menu_order",
+							},
+							{
+								label: __("Random", "chris-radtke-portfolio-blocks"),
+								value: "rand",
+							},
+						]}
+						onChange={(val) => setAttributes({ orderBy: val })}
+					/>
+
+					<SelectControl
+						label={__("Order", "chris-radtke-portfolio-blocks")}
+						value={order}
+						options={[
+							{
+								label: __("Descending", "chris-radtke-portfolio-blocks"),
+								value: "DESC",
+							},
+							{
+								label: __("Ascending", "chris-radtke-portfolio-blocks"),
+								value: "ASC",
+							},
+						]}
+						onChange={(val) => setAttributes({ order: val })}
+					/>
+				</PanelBody>
+
+				<PanelBody
+					title={__("Display Settings", "chris-radtke-portfolio-blocks")}
+					initialOpen={true}
+				>
+					<ToggleControl
+						label={__("Show Thumbnail", "chris-radtke-portfolio-blocks")}
+						checked={showThumbnail}
+						onChange={(val) => setAttributes({ showThumbnail: val })}
+					/>
+					<ToggleControl
+						label={__("Show Title", "chris-radtke-portfolio-blocks")}
+						checked={showTitle}
+						onChange={(val) => setAttributes({ showTitle: val })}
+					/>
+					<ToggleControl
+						label={__("Show Excerpt", "chris-radtke-portfolio-blocks")}
+						checked={showExcerpt}
+						onChange={(val) => setAttributes({ showExcerpt: val })}
+					/>
+				</PanelBody>
+			</InspectorControls>
+
+			{/* ── Editor Canvas ── */}
+			<div {...blockProps}>
+				{!projectTerm ? (
+					<Placeholder
+						icon={layout}
+						label={__("Series Loop", "chris-radtke-portfolio-blocks")}
+						instructions={__(
+							"Select a Projects taxonomy term in the block settings panel to preview posts.",
+							"chris-radtke-portfolio-blocks",
+						)}
+					/>
+				) : (
+					<div className="series-loop-editor-inner">
+						<div className="series-loop-editor-header">
+							<span className="series-loop-editor-label">
+								{__("Series Loop", "chris-radtke-portfolio-blocks")}
+							</span>
+							<span className="series-loop-editor-term">
+								{selectedTermLabel}
+							</span>
+						</div>
+
+						{postsLoading && <Spinner />}
+
+						{!postsLoading && previewPosts?.length === 0 && (
+							<p className="series-loop-editor-empty">
+								{__(
+									"No Series posts found for this term.",
+									"chris-radtke-portfolio-blocks",
+								)}
+							</p>
+						)}
+
+						{!postsLoading && previewPosts?.length > 0 && (
+							<ul className="series-loop-editor-list">
+								{previewPosts.map((post) => {
+									const thumbUrl =
+										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
+											?.sizes?.thumbnail?.source_url;
+
+									return (
+										<li key={post.id} className="series-loop-editor-item">
+											{showThumbnail && thumbUrl && (
+												<img
+													src={thumbUrl}
+													alt=""
+													className="series-loop-editor-thumb"
+												/>
+											)}
+											<div className="series-loop-editor-text">
+												{showTitle && (
+													<strong
+														dangerouslySetInnerHTML={{
+															__html: post.title.rendered,
+														}}
+													/>
+												)}
+												{showExcerpt && (
+													<span
+														className="series-loop-editor-excerpt"
+														dangerouslySetInnerHTML={{
+															__html: post.excerpt.rendered,
+														}}
+													/>
+												)}
+											</div>
+										</li>
+									);
+								})}
+								{postsPerPage > 3 && (
+									<li className="series-loop-editor-more">
+										{sprintf(
+											/* translators: %d: number of additional posts */
+											__(
+												"+ %d more posts on the frontend",
+												"chris-radtke-portfolio-blocks",
+											),
+											postsPerPage - 3,
+										)}
+									</li>
+								)}
+							</ul>
+						)}
+					</div>
+				)}
+			</div>
+		</>
+	);
+}

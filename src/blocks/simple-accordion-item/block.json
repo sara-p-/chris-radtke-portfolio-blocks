@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chris-radtke-portfolio-blocks/simple-accordion-item",
+	"version": "0.1.0",
+	"title": "Simple Accordion Item",
+	"category": "chris-radtke-portfolio-blocks",
+	"description": "A simple accordion for some simple text.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"summary": {
+			"type": "string",
+			"default": ""
+		},
+		"openByDefault": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"textdomain": "chris-radtke-portfolio-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

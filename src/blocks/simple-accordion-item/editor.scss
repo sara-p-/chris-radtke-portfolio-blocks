@@ -1,0 +1,23 @@
+// ─────────────────────────────────────────────
+// Accordion Block — editor.scss
+// Editor-only styles. The front end uses
+// view.js + max-height animation instead.
+// ─────────────────────────────────────────────
+
+.wp-block-chris-radtke-portfolio-blocks-simple-accordion-item {
+	// Hide the panel in the editor when closed,
+	// using visibility rather than display/hidden
+	// so Gutenberg can still reach the blocks inside.
+	.wp-block-accordion__panel {
+		visibility: hidden;
+		max-height: 0;
+		overflow: hidden;
+	}
+
+	.wp-block-accordion__panel.is-open {
+		visibility: visible;
+		max-height: none;
+		overflow: visible;
+		min-height: 200px;
+	}
+}

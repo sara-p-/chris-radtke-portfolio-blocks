@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chris-radtke-portfolio-blocks/series-loop",
+	"version": "1.0.0",
+	"title": "Series Loop",
+	"category": "chris-radtke-portfolio-blocks",
+	"icon": "list-view",
+	"description": "Displays a filtered loop of Series posts from a specific Projects taxonomy term.",
+	"keywords": ["series", "loop", "query", "projects"],
+	"textdomain": "chris-radtke-portfolio-blocks",
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"projectTerm": {
+			"type": "string",
+			"default": ""
+		},
+		"postsPerPage": {
+			"type": "number",
+			"default": 10
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "date"
+		},
+		"order": {
+			"type": "string",
+			"default": "DESC"
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"showExcerpt": {
+			"type": "boolean",
+			"default": true
+		},
+		"showThumbnail": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

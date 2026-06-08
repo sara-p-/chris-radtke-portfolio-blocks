@@ -1,0 +1,75 @@
+// ─────────────────────────────────────────────
+// Accordion Block — style.scss
+// ─────────────────────────────────────────────
+
+.wp-block-chris-radtke-portfolio-blocks-simple-accordion-item {
+	overflow: hidden;
+
+	// ── Summary (text only) ───────────────────
+	.wp-block-accordion__summary {
+		margin: 0;
+		padding: 1rem 1.25rem;
+		// margin-bottom: 1rem;
+	}
+
+	// ── Panel ─────────────────────────────────
+	// max-height animation is applied via view.js.
+	// overflow: hidden is also set via JS, but
+	// including it here avoids a flash on load.
+	.wp-block-accordion__panel {
+		overflow: hidden;
+		max-height: 0;
+	}
+
+	// When JS hasn't loaded yet, show the panel
+	// so content is still accessible.
+	&.no-js .wp-block-accordion__panel {
+		max-height: none;
+	}
+
+	.wp-block-accordion__panel-inner {
+		padding: 0 1.25rem 1rem;
+
+		> *:first-child {
+			margin-top: 0;
+		}
+		> *:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// ── Toggle button (below the panel) ───────
+	.wp-block-accordion__toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		background: transparent;
+		border: none;
+		width: 100%;
+		padding: 0.75rem 1.25rem;
+		cursor: pointer;
+		color: inherit;
+		text-align: left;
+
+		&:focus-visible {
+			outline: 2px solid currentColor;
+			outline-offset: 2px;
+		}
+	}
+
+	.wp-block-accordion__toggle-label {
+		margin: 0;
+		font-size: inherit;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.wp-block-accordion__toggle-icon {
+		display: block;
+
+		svg {
+			display: block;
+			transition: transform 0.2s ease;
+		}
+	}
+}
