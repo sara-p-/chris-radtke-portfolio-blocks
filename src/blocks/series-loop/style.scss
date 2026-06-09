@@ -60,6 +60,16 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
+		&::after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #000000;
+			opacity: 0;
+		}
 	}
 
 	// ── Body ─────────────────────────────────────────────────────────────────
@@ -86,6 +96,18 @@
 
 	&__title-text {
 	}
+}
+
+.series-loop__link:hover,
+.series-loop__link:focus {
+	.series-loop__thumbnail:after {
+		opacity: 0.25;
+	}
+}
+
+.series-loop__link:focus {
+	outline: 1px solid var(--wp--preset--color--dark-grey);
+	outline-offset: 8px;
 }
 
 /* 768px and below: 2 equal columns */

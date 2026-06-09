@@ -45,7 +45,7 @@
 		gap: 0.35rem;
 		background: transparent;
 		border: none;
-		width: 100%;
+		width: auto;
 		padding: 0.75rem 1.25rem;
 		cursor: pointer;
 		color: inherit;
@@ -53,14 +53,18 @@
 
 		&:focus-visible {
 			outline: 2px solid currentColor;
-			outline-offset: 2px;
+			outline-offset: -2px;
 		}
+	}
+
+	.wp-block-accordion__toggle-wrapper {
+		display: flex;
 	}
 
 	.wp-block-accordion__toggle-label {
 		margin: 0;
 		font-size: inherit;
-		font-weight: 600;
+		font-weight: 700;
 		line-height: 1;
 	}
 
