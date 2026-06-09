@@ -79,28 +79,22 @@ $wrapper_attributes = get_block_wrapper_attributes( [
     <li class="series-loop__item">
       <article class="series-loop__article" id="series-<?php echo esc_attr( $post_id ); ?>">
 
-        <?php if ( $show_thumbnail && has_post_thumbnail() ) : ?>
-        <a class="series-loop__thumbnail-link" href="<?php echo esc_url( $post_url ); ?>"
-          style="background-image: url('<?php echo esc_url( get_the_post_thumbnail_url( $post_id, 'medium' ) ); ?>')"
-          tabindex="-1" aria-hidden="true">
-        </a>
-        <?php endif; ?>
-
-        <div class="series-loop__body">
-
-          <?php if ( $show_title ) : ?>
+        <a href="<?php echo esc_url( $post_url ); ?>" class="series-loop__link">
+          <?php if ( $show_thumbnail && has_post_thumbnail() ) : ?>
+          <div class="series-loop__thumbnail-wrapper">
+            <div class="series-loop__thumbnail"
+              style="background-image: url('<?php echo esc_url( get_the_post_thumbnail_url( $post_id, 'large' ) ); ?>')">
+            </div>
+          </div>
+          <? endif; ?>
           <h6 class="series-loop__title">
-            <a class="series-loop__title-link" href="<?php echo esc_url( $post_url ); ?>">
-              <?php if ( $series_years ) : ?>
-              <span class="series-loop__years"><?php echo esc_html( $series_years ); ?></span>
-              <span class="series-loop__title-separator" aria-hidden="true"> | </span>
-              <?php endif; ?>
-              <span class="series-loop__title-text"><?php echo esc_html( $post_title ); ?></span>
-            </a>
+            <?php if ( $series_years ) : ?>
+            <span class="series-loop__years"><?php echo esc_html( $series_years ); ?></span>
+            <span class="series-loop__title-separator" aria-hidden="true"> | </span>
+            <?php endif; ?>
+            <span class="series-loop__title-text"><?php echo esc_html( $post_title ); ?></span>
           </h6>
-          <?php endif; ?>
-
-        </div><!-- .series-loop__body -->
+        </a>
 
       </article>
     </li>

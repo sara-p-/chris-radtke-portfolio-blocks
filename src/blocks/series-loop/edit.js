@@ -54,10 +54,12 @@ export default function Edit({ attributes, setAttributes }) {
 	// ── Fetch preview posts via apiFetch ──
 	const [previewPosts, setPreviewPosts] = useState([]);
 	const [postsLoading, setPostsLoading] = useState(false);
+	const [totalPosts, setTotalPosts] = useState(0);
 
 	useEffect(() => {
 		if (!projectTermId) {
 			setPreviewPosts([]);
+			setTotalPosts(0);
 			return;
 		}
 
@@ -73,16 +75,23 @@ export default function Edit({ attributes, setAttributes }) {
 				_embed: true,
 				_fields: "id,title,meta,_links,_embedded",
 			}),
+			parse: false,
 		})
-			.then((posts) => {
+			.then((response) => {
+				const total = parseInt(response.headers.get("X-WP-Total"), 10) || 0;
+				return response.json().then((posts) => ({ posts, total }));
+			})
+			.then(({ posts, total }) => {
 				if (!cancelled) {
 					setPreviewPosts(posts);
+					setTotalPosts(total);
 					setPostsLoading(false);
 				}
 			})
 			.catch(() => {
 				if (!cancelled) {
 					setPreviewPosts([]);
+					setTotalPosts(0);
 					setPostsLoading(false);
 				}
 			});
@@ -240,55 +249,56 @@ export default function Edit({ attributes, setAttributes }) {
 								{previewPosts.map((post) => {
 									const thumbUrl =
 										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
-											?.sizes?.medium?.source_url ??
+											?.sizes?.large?.source_url ??
 										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
 											?.sizes?.thumbnail?.source_url;
 									const seriesYears = post?.meta?.["_series_years"];
 
 									return (
 										<li key={post.id} className="series-loop-editor-item">
-											<div className="series-loop-editor-item-wrapper">
-												{showThumbnail && thumbUrl && (
+											{showThumbnail && thumbUrl && (
+												<div className="series-loop-editor-thumb-wrapper">
 													<div
 														className="series-loop-editor-thumb"
 														style={{ backgroundImage: `url(${thumbUrl})` }}
 														aria-hidden="true"
 														tabIndex={-1}
 													></div>
-												)}
-												{showTitle && (
-													<h6 className="series-loop-editor-title">
-														{seriesYears && (
-															<>
-																<span className="series-loop-editor-years">
-																	{seriesYears}
-																</span>
-																<span
-																	className="series-loop-editor-separator"
-																	aria-hidden="true"
-																>
-																	{" | "}
-																</span>
-															</>
-														)}
-														<span>{decodeEntities(post.title.rendered)}</span>
-													</h6>
-												)}
-											</div>
+												</div>
+											)}
+											{showTitle && (
+												<h6 className="series-loop-editor-title">
+													{seriesYears && (
+														<>
+															<span className="series-loop-editor-years">
+																{seriesYears}
+															</span>
+															<span
+																className="series-loop-editor-separator"
+																aria-hidden="true"
+															>
+																{" | "}
+															</span>
+														</>
+													)}
+													<span>{decodeEntities(post.title.rendered)}</span>
+												</h6>
+											)}
 										</li>
 									);
 								})}
-								{previewPosts.length > postsPerPage && (
-									<li className="series-loop-editor-more">
-										{sprintf(
-											__(
-												"+ %d more posts on the frontend",
-												"chris-radtke-portfolio-blocks",
-											),
-											postsPerPage - previewPosts.length,
-										)}
-									</li>
-								)}
+								{postsPerPage > previewPosts.length &&
+									totalPosts > previewPosts.length && (
+										<li className="series-loop-editor-more">
+											{sprintf(
+												__(
+													"+ %d more posts on the frontend",
+													"chris-radtke-portfolio-blocks",
+												),
+												totalPosts - previewPosts.length,
+											)}
+										</li>
+									)}
 							</ul>
 						)}
 					</div>
