@@ -1,8 +1,8 @@
 // =============================================================================
-// Series Loop Block — style.scss
+// work Loop Block — style.scss
 // =============================================================================
 
-.series-loop {
+.work-loop {
 	// ── List ─────────────────────────────────────────────────────────────────
 
 	&__list {
@@ -98,28 +98,28 @@
 	}
 }
 
-.series-loop__link:hover,
-.series-loop__link:focus {
-	.series-loop__thumbnail:after {
+.work-loop__link:hover,
+.work-loop__link:focus {
+	.work-loop__thumbnail:after {
 		opacity: 0.25;
 	}
 }
 
-.series-loop__link:focus {
+.work-loop__link:focus {
 	outline: 1px solid var(--wp--preset--color--dark-grey);
 	outline-offset: 8px;
 }
 
 /* 768px and below: 2 equal columns */
 @media (max-width: 768px) {
-	.series-loop__list {
+	.work-loop__list {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
 /* 480px and below: 1 column */
 @media (max-width: 480px) {
-	.series-loop__list {
+	.work-loop__list {
 		grid-template-columns: 1fr;
 	}
 }

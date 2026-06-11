@@ -1,21 +1,21 @@
 // =============================================================================
-// Series Loop Block — editor.scss
+// work Loop Block — editor.scss
 // =============================================================================
 
-.series-loop-editor-preview {
+.work-loop-editor-preview {
 }
 
-.series-loop-editor-inner {
+.work-loop-editor-inner {
 }
 
-.series-loop-editor-header {
+.work-loop-editor-header {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 	margin-bottom: 12px;
 }
 
-.series-loop-editor-label {
+.work-loop-editor-label {
 	font-weight: 600;
 	font-size: 11px;
 	text-transform: uppercase;
@@ -23,13 +23,13 @@
 	opacity: 0.5;
 }
 
-.series-loop-editor-term {
+.work-loop-editor-term {
 	font-size: 11px;
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 }
 
-.series-loop-editor-list {
+.work-loop-editor-list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -40,7 +40,7 @@
 	row-gap: clamp(1rem, calc(0.667rem + 1.25vw), 1.5rem);
 }
 
-.series-loop-editor-item {
+.work-loop-editor-item {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -48,7 +48,7 @@
 	padding: 6px 0;
 }
 
-.series-loop-editor-thumb-wrapper {
+.work-loop-editor-thumb-wrapper {
 	width: 100%;
 	position: relative;
 	display: block;
@@ -56,7 +56,7 @@
 	padding-top: 100%;
 }
 
-.series-loop-editor-thumb {
+.work-loop-editor-thumb {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -68,22 +68,22 @@
 	background-position: center;
 }
 
-.series-loop-editor-title {
+.work-loop-editor-title {
 	margin: 0;
 }
 
-.series-loop-editor-years {
+.work-loop-editor-years {
 }
 
-.series-loop-editor-separator {
+.work-loop-editor-separator {
 }
 
-.series-loop-editor-empty {
+.work-loop-editor-empty {
 	opacity: 0.5;
 	font-style: italic;
 }
 
-.series-loop-editor-more {
+.work-loop-editor-more {
 	opacity: 0.5;
 	font-size: 1rem;
 	padding-top: 6px;
@@ -92,14 +92,14 @@
 
 /* 768px and below: 2 equal columns */
 @media (max-width: 768px) {
-	.series-loop-editor-list {
+	.work-loop-editor-list {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
 /* 480px and below: 1 column */
 @media (max-width: 480px) {
-	.series-loop-editor-list {
+	.work-loop-editor-list {
 		grid-template-columns: 1fr;
 	}
 }

@@ -28,7 +28,7 @@ export default function Edit({ attributes, setAttributes }) {
 	} = attributes;
 
 	const blockProps = useBlockProps({
-		className: "series-loop-editor-preview",
+		className: "work-loop-editor-preview",
 	});
 
 	// ── Fetch taxonomy terms via core-data ──
@@ -67,7 +67,7 @@ export default function Edit({ attributes, setAttributes }) {
 		setPostsLoading(true);
 
 		apiFetch({
-			path: addQueryArgs("/wp/v2/series", {
+			path: addQueryArgs("/wp/v2/work", {
 				per_page: Math.min(postsPerPage, 3),
 				orderby: orderBy,
 				order: order.toLowerCase(),
@@ -139,7 +139,7 @@ export default function Edit({ attributes, setAttributes }) {
 								});
 							}}
 							help={__(
-								"Filter Series posts by this Projects taxonomy term.",
+								"Filter Work posts by this Projects taxonomy term.",
 								"chris-radtke-portfolio-blocks",
 							)}
 						/>
@@ -216,50 +216,48 @@ export default function Edit({ attributes, setAttributes }) {
 				{!projectTerm ? (
 					<Placeholder
 						icon={layout}
-						label={__("Series Loop", "chris-radtke-portfolio-blocks")}
+						label={__("Work Loop", "chris-radtke-portfolio-blocks")}
 						instructions={__(
 							"Select a Projects taxonomy term in the block settings panel to preview posts.",
 							"chris-radtke-portfolio-blocks",
 						)}
 					/>
 				) : (
-					<div className="series-loop-editor-inner">
-						<div className="series-loop-editor-header">
-							<span className="series-loop-editor-label">
-								{__("Series Loop", "chris-radtke-portfolio-blocks")}
+					<div className="work-loop-editor-inner">
+						<div className="work-loop-editor-header">
+							<span className="work-loop-editor-label">
+								{__("Work Loop", "chris-radtke-portfolio-blocks")}
 							</span>
-							<span className="series-loop-editor-term">
-								{selectedTermLabel}
-							</span>
+							<span className="work-loop-editor-term">{selectedTermLabel}</span>
 						</div>
 
 						{postsLoading && <Spinner />}
 
 						{!postsLoading && previewPosts.length === 0 && (
-							<p className="series-loop-editor-empty">
+							<p className="work-loop-editor-empty">
 								{__(
-									"No Series posts found for this term.",
+									"No Work posts found for this term.",
 									"chris-radtke-portfolio-blocks",
 								)}
 							</p>
 						)}
 
 						{!postsLoading && previewPosts.length > 0 && (
-							<ul className="series-loop-editor-list">
+							<ul className="work-loop-editor-list">
 								{previewPosts.map((post) => {
 									const thumbUrl =
 										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
 											?.sizes?.large?.source_url ??
 										post?._embedded?.["wp:featuredmedia"]?.[0]?.media_details
 											?.sizes?.thumbnail?.source_url;
-									const seriesYears = post?.meta?.["_series_years"];
+									const workYears = post?.meta?.["_work_years"];
 
 									return (
-										<li key={post.id} className="series-loop-editor-item">
+										<li key={post.id} className="work-loop-editor-item">
 											{showThumbnail && thumbUrl && (
-												<div className="series-loop-editor-thumb-wrapper">
+												<div className="work-loop-editor-thumb-wrapper">
 													<div
-														className="series-loop-editor-thumb"
+														className="work-loop-editor-thumb"
 														style={{ backgroundImage: `url(${thumbUrl})` }}
 														aria-hidden="true"
 														tabIndex={-1}
@@ -267,14 +265,14 @@ export default function Edit({ attributes, setAttributes }) {
 												</div>
 											)}
 											{showTitle && (
-												<h6 className="series-loop-editor-title">
-													{seriesYears && (
+												<h6 className="work-loop-editor-title">
+													{workYears && (
 														<>
-															<span className="series-loop-editor-years">
-																{seriesYears}
+															<span className="work-loop-editor-years">
+																{workYears}
 															</span>
 															<span
-																className="series-loop-editor-separator"
+																className="work-loop-editor-separator"
 																aria-hidden="true"
 															>
 																{" | "}
@@ -289,7 +287,7 @@ export default function Edit({ attributes, setAttributes }) {
 								})}
 								{postsPerPage > previewPosts.length &&
 									totalPosts > previewPosts.length && (
-										<li className="series-loop-editor-more">
+										<li className="work-loop-editor-more">
 											{sprintf(
 												__(
 													"+ %d more posts on the frontend",

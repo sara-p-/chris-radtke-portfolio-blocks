@@ -1,6 +1,6 @@
 <?php
 /**
- * render.php — Series Loop block
+ * render.php — Work Loop block
  *
  * Available variables (injected by WordPress):
  *   $attributes  (array)  — Block attributes from block.json.
@@ -30,7 +30,7 @@ if ( ! in_array( $order_by, $allowed_orderby, true ) ) {
 }
 
 $query_args = [
-	'post_type'      => 'series',
+	'post_type'      => 'work',
 	'posts_per_page' => $posts_per_page,
 	'orderby'        => $order_by,
 	'order'          => $order,
@@ -44,9 +44,9 @@ $query_args = [
 	],
 ];
 
-$series_query = new WP_Query( $query_args );
+$work_query = new WP_Query( $query_args );
 
-if ( ! $series_query->have_posts() ) {
+if ( ! $work_query->have_posts() ) {
 	return;
 }
 
@@ -58,48 +58,48 @@ $show_title     = isset( $attributes['showTitle'] ) ? (bool) $attributes['showTi
 // ── Wrapper attributes (supports color, spacing, etc.) ───────────────────────
 
 $wrapper_attributes = get_block_wrapper_attributes( [
-	'class'        => 'series-loop',
+	'class'        => 'work-loop',
 	'data-term'    => esc_attr( $project_term ),
 ] );
 
 // ── Render ────────────────────────────────────────────────────────────────────
 ?>
 <div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput ?>>
-  <ul class="series-loop__list">
+  <ul class="work-loop__list">
     <?php
-		while ( $series_query->have_posts() ) :
-			$series_query->the_post();
+		while ( $work_query->have_posts() ) :
+			$work_query->the_post();
 
 			$post_id      = get_the_ID();
 			$post_url     = get_permalink();
 			$post_title   = get_the_title();
-			$series_years = get_post_meta( $post_id, '_series_years', true );
+			$work_years = get_post_meta( $post_id, '_work_years', true );
 			?>
 
-    <li class="series-loop__item">
-      <article class="series-loop__article" id="series-<?php echo esc_attr( $post_id ); ?>">
+    <li class="work-loop__item">
+      <article class="work-loop__article" id="work-<?php echo esc_attr( $post_id ); ?>">
 
-        <a href="<?php echo esc_url( $post_url ); ?>" class="series-loop__link">
+        <a href="<?php echo esc_url( $post_url ); ?>" class="work-loop__link">
           <?php if ( $show_thumbnail && has_post_thumbnail() ) : ?>
-          <div class="series-loop__thumbnail-wrapper">
-            <div class="series-loop__thumbnail"
+          <div class="work-loop__thumbnail-wrapper">
+            <div class="work-loop__thumbnail"
               style="background-image: url('<?php echo esc_url( get_the_post_thumbnail_url( $post_id, 'large' ) ); ?>')">
             </div>
           </div>
           <? endif; ?>
-          <h6 class="series-loop__title">
-            <?php if ( $series_years ) : ?>
-            <span class="series-loop__years"><?php echo esc_html( $series_years ); ?></span>
-            <span class="series-loop__title-separator" aria-hidden="true"> | </span>
+          <h6 class="work-loop__title">
+            <?php if ( $work_years ) : ?>
+            <span class="work-loop__years"><?php echo esc_html( $work_years ); ?></span>
+            <span class="work-loop__title-separator" aria-hidden="true"> | </span>
             <?php endif; ?>
-            <span class="series-loop__title-text"><?php echo esc_html( $post_title ); ?></span>
+            <span class="work-loop__title-text"><?php echo esc_html( $post_title ); ?></span>
           </h6>
         </a>
 
       </article>
     </li>
     <?php endwhile; ?>
-  </ul><!-- .series-loop__list -->
+  </ul><!-- .work-loop__list -->
 </div>
 <?php
 
